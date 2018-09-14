@@ -1,0 +1,163 @@
+<div class="m-content">
+    <div class="row">
+  
+      <div class="col-lg-3">
+  
+  
+        <div class="m-portlet">
+          <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+              <div class="m-portlet__head-title">
+                <h3 class="m-portlet__head-text">
+                  Logistic Setup
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="m-portlet__body" style="padding: 0px !important;">
+            <div class="m-demo" data-code-html="true" data-code-js="false" data-code-preview="true">
+              <div class="m-demo__preview">
+                <ul class="m-nav nav nav-tabs">
+                  <li  class="m-nav__item" (click)="setTabItem('Activity')">
+                    <a class="m-nav__link" href="#Region" data-toggle="tab">
+                      <i class="m-nav__link-icon flaticon-share"></i>
+                      <span class="m-nav__link-text">
+                          Region</span>
+                    </a>
+                  </li>
+                  <li class="m-nav__item">
+                    <a class="m-nav__link" href="#Area" data-toggle="tab">
+                      <i class="m-nav__link-icon flaticon-cogwheel-2"></i>
+                      <span class="m-nav__link-text">
+                         Area
+                      </span>
+                    </a>
+                  </li>
+                  <li class="m-nav__item" (click)="setTabItem('FAQ')">
+                    <a class="m-nav__link" href="#Territory" data-toggle="tab">
+                      <i class="m-nav__link-icon flaticon-info"></i>
+                      <span class="m-nav__link-text">
+                        Territory
+                      </span>
+                    </a>
+                  </li>
+                  <li class="m-nav__item">
+                    <a class="m-nav__link" href="#Distributor" data-toggle="tab">
+                      <i class="m-nav__link-icon flaticon-cogwheel-2"></i>
+                      <span class="m-nav__link-text">
+                         Distributor
+                      </span>
+                    </a>
+                  </li>
+                  <li class="m-nav__item">
+                      <a class="m-nav__link" href="#SalesPerson" data-toggle="tab">
+                        <i class="m-nav__link-icon flaticon-cogwheel-2"></i>
+                        <span class="m-nav__link-text">
+                           Sales Person
+                        </span>
+                      </a>
+                    </li>
+                </ul>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+  
+  
+        <!-- required for floating -->
+        <!-- Nav tabs -->
+  
+      </div>
+  
+  
+  
+      <div class="col-lg-9">
+        <!-- Tab panes -->
+        <div class="m-portlet">
+          <div class="">
+            <div class="tab-content">
+            <div class="tab-pane active" id="Region"><app-region></app-region> </div>
+              <div class="tab-pane" id="Area"><app-area></app-area></div>
+              <div class="tab-pane" id="Territory"><app-territory></app-territory></div>
+              <div class="tab-pane" id="Distributor"><app-distributor></app-distributor></div>
+              <div class="tab-pane" id="SalesPerson">
+                <div class="m-portlet">
+                  <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                      <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">Add Customer</h3>
+                      </div>
+                    </div>
+                  </div>
+                <div class="m-portlet__body">
+                <div class="row">
+                  <div class="col-md-12"> 
+                      <dx-data-grid id="gridContainer" [dataSource]="banks" keyExpr="id" (onRowInserted)="addAllowances($event)" (onRowUpdated)="EditAllowances($event)" (onRowRemoved)="deleteAllowances($event)"> 
+                          <dxo-editing  mode="popup"[allowUpdating]="true"[allowDeleting]="true"[allowAdding]="true"[useIcons]="true">	
+                            <dxo-popup title="Add Customer" [showTitle]="true" [width]="750" [height]="545" [position]="{ my: 'center', at: 'center', of: window }"></dxo-popup>
+                          </dxo-editing>
+                          <dxo-filter-row [visible]="true"></dxo-filter-row>
+                          <dxo-header-filter [visible]="true"></dxo-header-filter>
+                          <dxo-search-panel  [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                          <dxo-paging [pageSize]="8"></dxo-paging>
+                          <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]"[showInfo]="true"></dxo-pager>
+                          <dxi-column dataField="id" caption="Id" [visible]="false"></dxi-column>
+                          <dxi-column dataField="CRN" caption="CRN"></dxi-column>
+                          <dxi-column dataField="Name" caption="Name"></dxi-column>
+                          <dxi-column dataField="" caption="Short Name" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Email" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Nature" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Contact No" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="CNIC" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Charge Bardana" [visible]="false"  dataType="boolean"></dxi-column>
+                          <dxi-column dataField="" caption="Show Receivables" [visible]="false" dataType="boolean"></dxi-column>
+                          <dxi-column dataField="" caption="Bed Debt" [visible]="false" dataType="boolean"></dxi-column>
+                          <dxi-column dataField="" caption="Show in DN" [visible]="false" dataType="boolean"></dxi-column>
+                          <dxi-column dataField="" caption="Is Security Deposit" [visible]="false" dataType="boolean"></dxi-column>
+                          <dxi-column dataField="" caption="Credit Days" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Credit Limit" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Agreed Investment" [visible]="false"></dxi-column>
+                          <dxi-column dataField="Address" caption="Address" [visible]="false"></dxi-column>
+                          <dxi-column dataField="City"caption="City" [visible]="true">
+                              <dxo-lookup [dataSource]="City" valueExpr="value" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                          <dxi-column dataField="Country"caption="Country" [visible]="true">
+                              <dxo-lookup [dataSource]="Country" valueExpr="value" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                          <dxi-column dataField="" caption="LandLine No" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Mobile No" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Fax No" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="Group Name" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="ST Number" [visible]="false"></dxi-column>
+                          <dxi-column dataField="" caption="NTN Number" [visible]="false"></dxi-column>
+                          <dxi-column dataField="banksAdvicetemplate"caption="Customer Type" [visible]="false">
+                              <dxo-lookup  valueExpr="value" [dataSource]="banksAdvicetemplate" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                          <dxi-column dataField="PaymentMode"caption="Mode Of Payment" [visible]="false">
+                              <dxo-lookup  valueExpr="value" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                          <dxi-column dataField="Region"caption="Region" [visible]="false">
+                              <dxo-lookup  valueExpr="value" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                          <dxi-column dataField="Distibutor" caption="Distibutor" [visible]="false">
+                              <dxo-lookup valueExpr="value" displayExpr="display"></dxo-lookup>
+                            </dxi-column>
+                            <dxi-column dataField="SalesPerson" caption="Sales Person" [visible]="false">
+                                <dxo-lookup valueExpr="value" displayExpr="display"></dxo-lookup>
+                              </dxi-column>
+                          </dx-data-grid> 
+                  </div>
+                </div>
+                </div></div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+  
+  
+    </div>
+  </div>

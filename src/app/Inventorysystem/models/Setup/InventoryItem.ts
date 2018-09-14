@@ -1,0 +1,22 @@
+export interface InventoryItem {
+    InventoryItemId: number,
+    ItemCode: string,
+    Description: string,
+    UnitPrice: number,
+    PackTypeInPackageType: number,
+    Dose: string,
+    MinLevel: number,
+    CostPrice: string,
+    RetailPrice: string,
+    PurchaseDate: string,
+    TradeOfferAmount: number,
+    BrabdId: number,
+    UnitId: number,
+    PackTypeId: number,
+    PackSizeId: number,
+    PackCategoryId: number,
+    ProductTypeId: number,
+    InventoryItemCategoryId: number,
+    PackageTypeId: number,
+    InventoryId: number
+}
