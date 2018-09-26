@@ -1,6 +1,6 @@
 export interface CustomerPricePickLevel {
-    CustomerPricePickLevelId: number,
-    Name: string,
-    Value: number,
-    CustomerTypeId: number
+    customerPricePickLevelId: number,
+    name: string,
+    value: number,
+    customerTypeId: number
 }

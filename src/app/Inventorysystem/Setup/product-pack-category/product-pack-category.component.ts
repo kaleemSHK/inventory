@@ -7,29 +7,34 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./product-pack-category.component.scss']
 })
 export class ProductPackCategoryComponent implements OnInit {
-    public banks: any;
+    private PackCategories : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Oil",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.PackCategories = await this.InventoryService.GetPackCategories();
+    }
+
+    async AddPackCategory(value) {
+        await this.InventoryService.AddPackCategory(value.data);
+        this.PackCategories = await this.InventoryService.GetPackCategories();
+    }
+
+    UpdateModel(value) {
+        //console.log(value);
+        this.UpdatedModel = { ...value.oldData, ...value.newData};
+        //console.log(this.UpdatedModel);
+    }
+
+    async UpdatePackCategory() {
+        return await this.InventoryService.UpdatePackCategory(this.UpdatedModel);
+    }
+
+    async DeletePackCategory(value) {
+        return await this.InventoryService.DeletePackCategory(value.key);
     }
 
 }

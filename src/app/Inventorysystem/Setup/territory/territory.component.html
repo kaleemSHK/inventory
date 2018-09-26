@@ -2,7 +2,7 @@
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
-          <h3 class="m-portlet__head-text">Area</h3>
+          <h3 class="m-portlet__head-text">Territory</h3>
         </div>
       </div>
     </div>
@@ -11,19 +11,18 @@
   <div class="m-portlet__body">
   <div class="row">
     <div class="col-md-12"> 
-        <dx-data-grid id="gridContainer" [dataSource]="banks" keyExpr="id" (onRowInserted)="addAllowances($event)" (onRowUpdated)="EditAllowances($event)" (onRowRemoved)="deleteAllowances($event)"> 
-            <dxo-editing  mode="popup"[allowUpdating]="true"[allowDeleting]="true"[allowAdding]="true"[useIcons]="true">	
-              <dxo-popup title="Add Customer" [showTitle]="true" [width]="750" [height]="545" [position]="{ my: 'center', at: 'center', of: window }"></dxo-popup>
+        <dx-data-grid id="gridContainer" [dataSource]="Territories" keyExpr="territoryId" (onRowInserted)="AddTerritory($event)" (onRowUpdating)="UpdateModel($event)" (onRowUpdated)="UpdateTerritory()" (onRowRemoved)="DeleteTerritory($event)"> 
+            <dxo-editing  mode="popup" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true">	
+              <dxo-popup title="Add Territory" [showTitle]="true" [width]="500" [height]="'auto'" [dragEnabled]="false" [closeOnOutsideClick]="true" [position]="{ my: 'center', at: 'center', of: window }"></dxo-popup>
             </dxo-editing>
             <dxo-filter-row [visible]="true"></dxo-filter-row>
             <dxo-header-filter [visible]="true"></dxo-header-filter>
             <dxo-search-panel  [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-            <dxo-paging [pageSize]="8"></dxo-paging>
+            <dxo-paging [pageSize]="5"></dxo-paging>
             <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]"[showInfo]="true"></dxo-pager>
-            <dxi-column dataField="id" caption="Id" [visible]="false"></dxi-column>
-            <dxi-column dataField="Name" caption="Name"></dxi-column>          
-            <dxi-column dataField="Area"caption="Area" [visible]="true">
-                <dxo-lookup [dataSource]="City" valueExpr="value" displayExpr="display"></dxo-lookup>
+            <dxi-column dataField="name" caption="Name"></dxi-column>          
+            <dxi-column dataField="areaId" caption="Area" [visible]="true">
+                <dxo-lookup [dataSource]="Areas" valueExpr="areaId" displayExpr="name"></dxo-lookup>
               </dxi-column>
             </dx-data-grid> 
      </div>

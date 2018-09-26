@@ -1,6 +1,9 @@
+import { Distributor } from "./Distributor";
+
 export interface Territory {
-    TerritoryId: number,
-    Name: string,
-    AreaId: number,
-    DistributorId: number
+    territoryId: number,
+    name: string,
+    isAssigned : boolean,
+    areaId: number,
+    distributor : Distributor
 }

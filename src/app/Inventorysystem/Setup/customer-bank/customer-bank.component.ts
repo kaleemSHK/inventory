@@ -7,37 +7,37 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-bank.component.scss']
 })
 export class CustomerBankComponent implements OnInit {
-    public banks: any;
+    private CustomerBanks : any;
+    private CustomerTypes : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Chequetemplate: any;
+    constructor(private InventoryService : InventorysystemService){
 
-    constructor() { }
+     }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Imtiaz Store",
-                AccountCode:"0021",
-                bankTitle: "Meezan",
-                bankBranchCode: "001",
-                branch: "Tariq Road",
-                companyBank: "Abc",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                chequeTemplate: ["--Select--", "Bank Al Habib", "UBL"],
-                active: "yes"
-            }
+    async ngOnInit() {
+        this.CustomerBanks = await this.InventoryService.GetCustomerBanks();
+        this.CustomerTypes= await this.InventoryService.GetCustomerTypes();
+    }
 
+    async AddCustomerBank(value) {
+        //console.log(value);
+        await this.InventoryService.AddCustomerBank(value.data);
+        this.CustomerBanks = await this.InventoryService.GetCustomerBanks();
+    }
 
-        ]
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+        //console.log(this.UpdatedModel);
+    }
 
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Chequetemplate = [{ value: "", display: "--Select--" }, { value: "Bank-Al-Habib", display: "Bank Al Habib" }, { value: "UBL", display: "UBL" }];
+    async UpdateCustomerBank() {
+        return await this.InventoryService.UpdateCustomerBank(this.UpdatedModel);
+    }
 
-        console.log(this.banks);
-
-
+    async DeleteCustomerBank(value) {
+        //console.log(value.key);
+        return await this.InventoryService.DeleteCustomerBank(value.key);
     }
 
 }

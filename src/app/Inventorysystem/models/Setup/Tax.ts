@@ -1,5 +1,5 @@
 export interface Tax {
-    TaxId: number,
-    Name: string,
-    Percentage: number
+    taxId: number,
+    name: string,
+    percentage: number
 }

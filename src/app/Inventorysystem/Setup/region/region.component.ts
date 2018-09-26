@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemModule } from '../../Inventorysystem.module';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { FormGroup } from '@angular/forms';
+import { Region } from '../../models/Setup/Region';
 
 @Component({
     selector: 'app-region',
@@ -8,29 +10,39 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./region.component.scss']
 })
 export class RegionComponent implements OnInit {
-    public banks: any;
+    private Regions : any;
+    private updatedmodel : Region;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
+        // this.form = new FormGroup {
 
-    constructor() { }
+        // };
+     }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Karachi West",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.Regions = await this.InventoryService.GetRegions();
+    }
+
+    async AddRegion(value)
+    {
+        await this.InventoryService.AddRegion(value.data);
+    }
+
+    UpdateModel(value) {
+        this.updatedmodel = Object.assign(value.oldData, value.newData);
+        console.log(this.updatedmodel);
+    }
+    
+    async UpdateRegion(value)
+    {
+        var updateRow : Region = value.data;
+        updateRow.regionId = value.key;
+        await this.InventoryService.UpdateRegion(updateRow);
+    }
+
+    async DeleteRegion(value)
+    {
+        await this.InventoryService.DeleteRegion(value.data.regionId);
     }
 
 }

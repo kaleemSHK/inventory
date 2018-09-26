@@ -1,4 +1,4 @@
 export interface PackSize {
-    PackSizeId: number,
-    Size: number
+    packSizeId: number,
+    size: number
 }

@@ -9,29 +9,32 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./unit.component.css']
 })
 export class UnitComponent implements OnInit {
-    public banks: any;
+    private Units : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Oil 5000ml",
-                Description: "5000ml",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+       this.Units = await this.InventoryService.GetUnits();
+    }
+
+    async AddUnit(value) {
+        await this.InventoryService.AddUnit(value.data);
+        this.Units = await this.InventoryService.GetUnits();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateUnit() {
+        return await this.InventoryService.UpdateUnit(this.UpdatedModel);
+    }
+
+    async DeleteUnit(value) {
+        return await this.InventoryService.DeleteUnit(value.key);
     }
 
 }

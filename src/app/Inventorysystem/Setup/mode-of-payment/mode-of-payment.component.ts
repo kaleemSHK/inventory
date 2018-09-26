@@ -7,29 +7,31 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./mode-of-payment.component.scss']
 })
 export class ModeOfPaymentComponent implements OnInit {
-    public banks: any;
+    private ModeOfPayments : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) { }
 
-    constructor() { }
+    async ngOnInit() {
+        this.ModeOfPayments = await this.InventoryService.GetModeOfPayments();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Sales Tax",
-                Percentage: "20%",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.City = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async AddModeOfPayment(value) {
+        //console.log(value.data);
+        await this.InventoryService.AddModeOfPayment(value.data);
+        this.ModeOfPayments = await this.InventoryService.GetModeOfPayments();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateModeOfPayment() {
+        return await this.InventoryService.UpdateModeOfPayment(this.UpdatedModel);
+    }
+
+    async DeleteModeOfPayment(value) {
+        return await this.InventoryService.DeleteModeOfPayment(value.key);
     }
 
 }

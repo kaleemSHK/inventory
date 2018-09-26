@@ -7,27 +7,59 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-    private InventoryItem: any;
-    private Inventory: any;
+    private InventoryItems: any;
+    private Inventories: any;
+    private UpdatedModel : any;
+    private UnassignedItems : any;
+    private DataSource : any;
 
     constructor(private InventoryService: InventorysystemService) {
-
+        this.onPopupShown = this.onPopupShown.bind(this);
+        this.onPopupHide = this.onPopupHide.bind(this);
     }
 
+    async onPopupShown() {
+        await this.CheckUnassignedItems();
+        this.DataSource = this.UnassignedItems;
+    }
+
+    async onPopupHide() {
+        this.DataSource = this.InventoryItems;
+        //await this.CheckUnassignedItems();
+    }
+
+
     async ngOnInit() {
-        this.InventoryItem = await this.InventoryService.GetInventoryItems();
-        this.Inventory = await this.InventoryService.GetInventories();
+        this.Inventories = await this.InventoryService.GetInventories();
+        console.log(this.Inventories);
+        await this.CheckUnassignedItems();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
     }
 
     async AddInventory(value) {
-        return await this.InventoryService.AddInventory(value);
+        await this.InventoryService.AddInventory(value.data);
+        this.InventoryItems = await this.InventoryService.GetInventoryItems();
+        await this.CheckUnassignedItems();
     }
 
     async UpdateInventory(value) {
-        return await this.InventoryService.UpdateInventory(value.Key);
+        await this.InventoryService.UpdateInventory(this.UpdatedModel);
+        await this.CheckUnassignedItems();
     }
 
     async DeleteInventory(value) {
-        return await this.InventoryService.DeleteInventory(value.Key.InventoryId);
+        await this.InventoryService.DeleteInventory(value.key);
+        await this.CheckUnassignedItems();
+    }
+
+    async CheckUnassignedItems() {
+        this.InventoryItems = await this.InventoryService.GetInventoryItems();
+        console.log(this.InventoryItems);
+        this.DataSource = this.InventoryItems;
+        this.UnassignedItems = this.InventoryItems.filter(a => a.inventory === null);
+        console.log(this.UnassignedItems);
     }
 }

@@ -1,4 +1,4 @@
-export interface Region {
-    RegionId: number,
-    Name: string
+export class Region {
+    regionId: number;
+    name: string;
 }

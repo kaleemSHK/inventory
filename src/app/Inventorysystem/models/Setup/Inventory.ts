@@ -1,5 +1,5 @@
 export interface Inventory {
-    InventoryId: number,
-    StockQuantity: number,
-    InventoryItemId: number;
+    inventoryId: number,
+    stockQuantity: number,
+    inventoryItemId: number;
 }

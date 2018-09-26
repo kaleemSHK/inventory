@@ -1,17 +1,18 @@
 export interface Distributor {
-    DistributorId: number,
-    DRN: string,
-    Status: string,
-    Name: string,
-    Address: string,
-    City: string,
-    Country: string,
-    LandlineNumber: string,
-    MobileNumber: string,
-    FaxNumber: string,
-    Email: string,
-    Nature: string,
-    ContactName: string,
-    ContactNumber: string,
-    TerritoryId: number
+    distributorId: number,
+    dRN: string,
+    status: string,
+    name: string,
+    address: string,
+    city: string,
+    country: string,
+    landlineNumber: string,
+    mobileNumber: string,
+    hasTerritory : boolean;
+    faxNumber: string,
+    email: string,
+    nature: string,
+    contactName: string,
+    contactNumber: string,
+    territoryId: number
 }

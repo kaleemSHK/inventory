@@ -7,29 +7,32 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./transport.component.scss']
 })
 export class TransportComponent implements OnInit {
-    public banks: any;
+    private Transports : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Sales Tax",
-                Percentage: "20%",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.City = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.Transports = await this.InventoryService.GetTransports();
+    }
+
+    async AddTransport(value) {
+        await this.InventoryService.AddTransport(value.data);
+        this.Transports = await this.InventoryService.GetTransports();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateTransport() {
+        return this.InventoryService.UpdateTransport(this.UpdatedModel);
+    }
+
+    async DeleteTransport(value) {
+        return this.InventoryService.DeleteTransport(value.key);
     }
 
 }

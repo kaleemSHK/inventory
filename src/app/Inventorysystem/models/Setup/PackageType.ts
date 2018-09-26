@@ -1,4 +1,4 @@
 export interface PackageType {
-    PackageTypeId: number,
-    Name: string
+    packageTypeId: number,
+    name: string
 }

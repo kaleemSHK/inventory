@@ -1,9 +1,9 @@
 export interface CustomerWarehouse {
-    CustomerWarehouseId: number,
-    Name: string,
-    Address: string,
-    PostCode: string,
-    Country: string,
-    City: string,
-    CustomerTypeId: number
+    customerWarehouseId: number,
+    name: string,
+    address: string,
+    postCode: string,
+    country: string,
+    city: string,
+    customerTypeId: number
 }

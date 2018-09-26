@@ -8,30 +8,34 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-price-pick-level.component.scss']
 })
 export class CustomerPricePickLevelComponent implements OnInit {
-    public banks: any;
+    private CustomerPrices : any;
+    private CustomerTypes : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Chequetemplate: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Pakistani",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
+    async ngOnInit() {
+        this.CustomerPrices = await this.InventoryService.GetPricePickLevels();
+        this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+    }
 
+    async AddCustomerPrice(value) {
+        await this.InventoryService.AddCustomerPricePickLevel(value.data);
+        this.CustomerPrices = await this.InventoryService.GetPricePickLevels();
+    }
 
-        ]
+    UpdateModel(value) {
+        this.UpdatedModel = { ...value.oldData, ...value.newData };
+    }
 
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-      
-        console.log(this.banks);
+    async UpdateCustomerPrice() {
+        return await this.InventoryService.UpdateCustomerPricePickLevel(this.UpdatedModel);
+    }
 
-
+    async DeleteCustomerPrice(value) {
+        return await this.InventoryService.DeleteCustomerPricePickLevel(value.key);
     }
 
 }

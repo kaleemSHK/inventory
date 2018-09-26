@@ -7,29 +7,36 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-warehouse.component.scss']
 })
 export class CustomerWarehouseComponent implements OnInit {
-    public banks: any;
+    private CustomerWarehouses : any;
+    private CustomerTypes : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Pakistani",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.CustomerWarehouses = await this.InventoryService.GetCustomerWarehouses();
+        this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+    }
+
+    async AddWarehouse(value) {
+        //console.log(value.data);
+        return await this.InventoryService.AddCustomerWarehouse(value.data);
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+        //console.log(this.UpdatedModel);
+    }
+
+    async UpdateWarehouse() {
+        return await this.InventoryService.UpdateCustomerWarehouse(this.UpdatedModel);
+    }
+
+    async DeleteWarehouse(value) {
+        //console.log(value.key);
+        await this.InventoryService.DeleteCustomerWarehouse(value.key);
     }
 
 }

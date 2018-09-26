@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { Territory } from '../../models/Setup/Territory';
+import { DxDataGridModule, DxPopupModule } from "devextreme-angular";
+
 
 @Component({
     selector: 'app-distributor',
@@ -7,29 +10,60 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./distributor.component.scss']
 })
 export class DistributorComponent implements OnInit {
-    public banks: any;
+    private Distributors : any;
+    private Territories : any;
+    private UnassignedTerritories : any;
+    private UpdatedModel : any;
+    private DataSource : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
-
-    constructor() { }
-
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Karachi West",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.City = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    constructor(private InventoryService : InventorysystemService) {
+        this.onPopupShown = this.onPopupShown.bind(this);
+        this.onPopupHide = this.onPopupHide.bind(this);
     }
 
+    async onPopupShown() {
+        await this.CheckUnassignedTerritories();
+        this.DataSource = this.UnassignedTerritories;
+    }
+
+    async onPopupHide() {
+        this.DataSource = this.Territories;
+    }
+
+    async ngOnInit() {
+        this.Distributors = await this.InventoryService.GetDistributors();
+        await this.CheckUnassignedTerritories();
+    }
+
+    async AddDistributor(value) {
+        //console.log(this.DataSource);
+        await this.InventoryService.AddDistributor(value.data);
+        this.Distributors = await this.InventoryService.GetDistributors();
+        await this.CheckUnassignedTerritories();
+    }
+
+    UpdateModel(value) {
+        //console.log(value);
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+        //console.log(this.UpdatedModel);
+    }
+
+    async UpdateDistributor() {
+        //console.log(this.DataSource);
+        await this.InventoryService.UpdateDistributor(this.UpdatedModel);
+        await this.CheckUnassignedTerritories();
+    }
+
+    async DeleteDistributor(value) {
+        //console.log(this.DataSource);
+        await this.InventoryService.DeleteDistributor(value.key);
+        await this.CheckUnassignedTerritories();
+    }
+
+    async CheckUnassignedTerritories() {
+        this.Territories = await this.InventoryService.GetTerritories();
+        this.DataSource = this.Territories;
+        this.UnassignedTerritories = this.Territories.filter(a => a.distributor === null);
+        //console.log(this.UnassignedTerritories);
+    }
 }

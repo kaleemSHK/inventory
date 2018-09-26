@@ -1,4 +1,4 @@
 export interface PackCategory {
-    PackCategoryId: number,
-    Name: string
+    packCategoryId: number,
+    name: string
 }

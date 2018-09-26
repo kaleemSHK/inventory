@@ -1,5 +1,5 @@
 export interface PackType {
-    PackTypeId: number,
-    Name: string,
-    EquivalentBasicUnit: number
+    packTypeId: number,
+    name: string,
+    equivalentBasicUnit: number
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { CustomerAccount } from '../../models/Setup/CustomerAccount';
 
 @Component({
     selector: 'app-customer-account',
@@ -7,37 +8,35 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-account.component.scss']
 })
 export class CustomerAccountComponent implements OnInit {
-    public banks: any;
+    private CustomerAccounts : any;
+    private CustomerTypes : any;
+    private updatedmodel : CustomerAccount;
 
-    public banksAdvicetemplate: any;
-    public Chequetemplate: any;
+    constructor(private InventoryService : InventorysystemService) { }
 
-    constructor() { }
+    async ngOnInit() {
+        this.CustomerAccounts = await this.InventoryService.GetCustomerAccounts();
+        this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Imtiaz Store",
-                AccountCode:"0021",
-                bankTitle: "Meezan",
-                bankBranchCode: "001",
-                branch: "Tariq Road",
-                companyBank: "Abc",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                chequeTemplate: ["--Select--", "Bank Al Habib", "UBL"],
-                active: "yes"
-            }
+    async AddCustomerAccount(value) {
+        console.log(value);
+        await this.InventoryService.AddCustomerAccount(value.data);
+        this.CustomerAccounts = await this.InventoryService.GetCustomerAccounts();
+    }
 
+    async UpdateCustomerAccount() {
+        return await this.InventoryService.UpdateCustomerAccount(this.updatedmodel);
+    }
 
-        ]
+    async DeleteCustomerAccount(value) {
+        return await this.InventoryService.DeleteCustomerAccount(value.key);
+    }
 
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Chequetemplate = [{ value: "", display: "--Select--" }, { value: "Bank-Al-Habib", display: "Bank Al Habib" }, { value: "UBL", display: "UBL" }];
-
-        console.log(this.banks);
-
-
+    UpdateModel(value) {
+        //this.updatedmodel = Object.assign(value.oldData, value.newData);
+        this.updatedmodel = {...value.oldData, ...value.newData};
+        console.log(this.updatedmodel);
     }
 
 }

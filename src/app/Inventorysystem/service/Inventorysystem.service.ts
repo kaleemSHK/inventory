@@ -879,25 +879,25 @@ export class InventorysystemService {
 
     //InventoryItemCategory
     async GetInventoryItemCategories() {
-        this.InventoryItemCategory = await this.http.get<InventoryItemCategory>(this.API_URL + 'Setup/GetInventoryItemCategories').toPromise();
+        this.InventoryItemCategory = await this.http.get<InventoryItemCategory>(this.API_URL + 'Setup/GetCategories').toPromise();
         //console.log(this.InventoryItemCategory);
         return this.InventoryItemCategory;
     }
 
     async AddInventoryItemCategory(InventoryItemCategory: InventoryItemCategory) {
-        let x = await this.http.post(this.API_URL + 'Setup/AddInventoryItemCategory', InventoryItemCategory).toPromise();
+        let x = await this.http.post(this.API_URL + 'Setup/AddCategory', InventoryItemCategory).toPromise();
         console.log(x);
         return x;
     }
 
     async UpdateInventoryItemCategory(InventoryItemCategory: InventoryItemCategory) {
-        let y = await this.http.put(this.API_URL + 'Setup/UpdateInventoryItemCategory', InventoryItemCategory).toPromise();
+        let y = await this.http.put(this.API_URL + 'Setup/UpdateCategory', InventoryItemCategory).toPromise();
         console.log(y);
         return y;
     }
 
     async DeleteInventoryItemCategory(id) {
-        let x = await this.http.delete(this.API_URL + 'Setup/DeleteInventoryItemCategory/' + id).toPromise();
+        let x = await this.http.delete(this.API_URL + 'Setup/DeleteCategory/' + id).toPromise();
         console.log(x);
         return x;
     }

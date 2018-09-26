@@ -1,5 +1,5 @@
 export interface Comission {
-    ComissionId: number,
-    Name: string,
-    Percentage: number
+    comissionId: number,
+    name: string,
+    percentage: number
 }

@@ -7,29 +7,32 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./package-type.component.scss']
 })
 export class PackageTypeComponent implements OnInit {
-    public banks: any;
+    private PackageTypes: any;
+    private UpdatedModel : any;
+    
+    constructor(private InventoryService: InventorysystemService) {
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    }
 
-    constructor() { }
+    async ngOnInit() {
+        this.PackageTypes = await this.InventoryService.GetPackageTypes();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Oil",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async AddPackageType(value) {
+        await this.InventoryService.AddPackageType(value.data);
+        this.PackageTypes = await this.InventoryService.GetPackageTypes();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdatePackageType() {
+        return await this.InventoryService.UpdatePackageType(this.UpdatedModel);
+    }
+
+    async DeletePackageType(value) {
+        return await this.InventoryService.DeletePackageType(value.key);
     }
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { Comission } from '../../models/Setup/Comission';
 
 @Component({
     selector: 'app-comission',
@@ -7,29 +8,33 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./comission.component.scss']
 })
 export class ComissionComponent implements OnInit {
-    public banks: any;
+    private Comissions : any;
+    private updatedmodel : Comission;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) { }
 
-    constructor() { }
+    async ngOnInit() {
+        this.Comissions = await this.InventoryService.GetComissions();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Imraan Ahmed Khan",
-                Percentage: "20%",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.City = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    UpdateModel(value) {
+        this.updatedmodel = Object.assign(value.oldData, value.newData);
+        console.log(this.updatedmodel);
+    }
+
+    async AddComission(value) {
+        console.log(value.data);
+        await this.InventoryService.AddComission(value.data);
+        this.Comissions = await this.InventoryService.GetComissions();
+    }
+
+    async UpdateComission() {
+        return await this.InventoryService.UpdateComission(this.updatedmodel);
+    }
+
+    async DeleteComission(value) {
+        console.log(value);
+        return await this.InventoryService.DeleteComission(value.key);
     }
 
 }

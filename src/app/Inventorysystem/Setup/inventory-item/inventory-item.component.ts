@@ -10,37 +10,48 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
 })
 
 export class InventoryItemComponent implements OnInit {
-    public banks: any;
+    private InventoryItems : any;
+    private Brands : any;
+    private Units : any;
+    private PackTypes : any;
+    private PackSizes : any;
+    private PackCategories : any;
+    private ProductTypes : any;
+    private InventoryItemCategories : any;
+    private PackageTypes : any;
+    private UpdatedModel : any;
+    
+    constructor(private InventoryService : InventorysystemService) {
 
-    public banksAdvicetemplate: any;
-    public Chequetemplate: any;
+    }
 
-    constructor() { }
+    async ngOnInit() {
+        this.InventoryItems = await this.InventoryService.GetInventoryItems();
+        this.Brands = await this.InventoryService.GetBrands();
+        this.Units = await this.InventoryService.GetUnits();
+        this.PackTypes = await this.InventoryService.GetPackTypes();
+        this.PackSizes = await this.InventoryService.GetPackSizes();
+        this.PackCategories = await this.InventoryService.GetPackCategories();
+        this.ProductTypes = await this.InventoryService.GetProductTypes();
+        this.InventoryItemCategories = await this.InventoryService.GetInventoryItemCategories();
+        this.PackageTypes = await this.InventoryService.GetPackageTypes();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Imtiaz Store",
-                AccountCode:"0021",
-                bankTitle: "Meezan",
-                bankBranchCode: "001",
-                branch: "Tariq Road",
-                companyBank: "Abc",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                chequeTemplate: ["--Select--", "Bank Al Habib", "UBL"],
-                active: "yes"
-            }
+    async AddInventoryItem(value) {
+        await this.InventoryService.AddInventoryItem(value.data);
+        this.InventoryItems = await this.InventoryService.GetInventoryItems();
+    }
 
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
 
-        ]
+    async UpdateInventoryItem() {
+        return await this.InventoryService.UpdateInventoryItem(this.UpdatedModel);
+    }
 
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Chequetemplate = [{ value: "", display: "--Select--" }, { value: "Bank-Al-Habib", display: "Bank Al Habib" }, { value: "UBL", display: "UBL" }];
-
-        console.log(this.banks);
-
-
+    async DeleteInventoryItem(value) {
+        return await this.InventoryService.DeleteInventoryItem(value.key);
     }
 
 }

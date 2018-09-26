@@ -7,25 +7,31 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./item-price-structure.component.scss']
 })
 export class ItemPriceStructureComponent implements OnInit {
-    private ItemPriceStructure: any;
+    private ItemPriceStructures: any;
+    private UpdatedModel : any;
 
     constructor(private InventoryService: InventorysystemService) {
 
     }
 
     async ngOnInit() {
-        this.ItemPriceStructure = await this.InventoryService.GetItemPriceStructures();
+        this.ItemPriceStructures = await this.InventoryService.GetItemPriceStructures();
     }
 
     async AddItemPriceStructure(value) {
-        return await this.InventoryService.AddItemPriceStructure(value);
+        await this.InventoryService.AddItemPriceStructure(value.data);
+        this.ItemPriceStructures = await this.InventoryService.GetItemPriceStructures();
     }
 
-    async UpdateItemPriceStructure(value) {
-        return await this.InventoryService.UpdateItemPriceStructure(value.Key);
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateItemPriceStructure() {
+        return await this.InventoryService.UpdateItemPriceStructure(this.UpdatedModel);
     }
 
     async DeleteItemPriceStructure(value) {
-        return await this.InventoryService.DeleteItemPriceStructure(value.Key.ItemPriceStructureId);
+        return await this.InventoryService.DeleteItemPriceStructure(value.key);
     }
 }

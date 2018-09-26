@@ -7,29 +7,32 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./inventory-item-category.component.scss']
 })
 export class InventoryItemCategoryComponent implements OnInit {
-    public banks: any;
+    private ItemCategories : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Oil",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.ItemCategories = await this.InventoryService.GetInventoryItemCategories();
+    }
+
+    async AddItemCategory(value) {
+        await this.InventoryService.AddInventoryItemCategory(value.data);
+        this.ItemCategories = await this.InventoryService.GetInventoryItemCategories();
+    }
+
+    async UpdateItemCategory() {
+        return await this.InventoryService.UpdateInventoryItemCategory(this.UpdatedModel);
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async DeleteItemCategory(value) {
+        return await this.InventoryService.DeleteInventoryItemCategory(value.key);
     }
 
 }

@@ -1,4 +1,4 @@
 export interface ModeOfPayment {
-    ModeOfPaymentId: number,
-    Name: string
+    modeOfPaymentId: number,
+    name: string
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { Area } from '../../models/Setup/Area';
+import { Territory } from '../../models/Setup/Territory';
 
 @Component({
     selector: 'app-sales-person',
@@ -7,29 +9,72 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./sales-person.component.scss']
 })
 export class SalesPersonComponent implements OnInit {
-    public banks: any;
+    private SalesPeople : any;
+    private Distributors : any;
+    private Areas : any;
+    private Territories : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService){
+        this.getFilteredDistributors = this.getFilteredDistributors.bind(this);
+        this.getFilteredTerritories = this.getFilteredTerritories.bind(this);
+    }
 
-    constructor() { }
+    async ngOnInit() {
+        this.SalesPeople = await this.InventoryService.GetSalesPeople();
+        this.Areas = await this.InventoryService.GetAreas();
+        this.Territories= await this.InventoryService.GetTerritories();
+        this.Distributors =  await this.InventoryService.GetDistributors();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Karachi West",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async AddSalesPerson(value) {
+        await this.InventoryService.AddSalesPerson(value.data);
+        this.SalesPeople = await this.InventoryService.GetSalesPeople();
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateSalesPerson() {
+        return await this.InventoryService.UpdateSalesPerson(this.UpdatedModel);
+    }
+
+    async DeleteSalesPerson(value) {
+        return await this.InventoryService.DeleteSalesPerson(value.key);
+    }
+
+    getFilteredTerritories(options) {
+        return {
+            store: this.Territories,
+            filter: options.data ? ["areaId", "=", options.data.areaId] : null
+        };
+    }
+
+    getFilteredDistributors(options) {
+        return {
+            store: this.Distributors,
+            filter: options.data ? ["territoryId", "=", options.data.territoryId] : null
+        };
+    }
+
+    onEditorPreparing(e) {
+        if(e.parentType === "dataRow" && e.dataField === "territoryId") {
+            e.editorOptions.disabled = (typeof e.row.data.areaId !== "number");
+        }
+        if(e.parentType === "dataRow" && e.dataField === "distributorId") {
+            e.editorOptions.disabled = (typeof e.row.data.territoryId !== "number");
+        }
+    }
+
+    setTerritoryValue(rowData: any, value: any): void {
+        rowData.territoryId = null;
+        (<any>this).defaultSetCellValue(rowData, value);
+    }
+
+    setAreaValue(rowData: any, value: any): void {
+        rowData.areaId = null;
+        (<any>this).defaultSetCellValue(rowData, value);
     }
 
 }

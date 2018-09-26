@@ -1,12 +1,12 @@
 export interface CustomerType {
-    CustomerTypeId: number,
-    Name: string,
-    Address: string,
-    City: string,
-    Country: string,
-    LandlineNumber: string,
-    MobileNumber: string,
-    FaxNumber: string,
-    ContactPerson: string,
-    PhoneNumber: string
+    customerTypeId: number,
+    name: string,
+    address: string,
+    city: string,
+    country: string,
+    landlineNumber: string,
+    mobileNumber: string,
+    faxNumber: string,
+    contactPerson: string,
+    phoneNumber: string
 }

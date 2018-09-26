@@ -1,35 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { Area } from '../../models/Setup/Area';
+import { DxDataGridComponent } from "devextreme-angular";
+import { ValidationStatesModule } from '../../../theme/pages/default/components/forms/validation/validation-states/validation-states.module';
 
 @Component({
     selector: 'app-area',
     templateUrl: './area.component.html',
     styleUrls: ['./area.component.scss']
 })
-export class AreaComponent implements OnInit {
-    public banks: any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
 
-    constructor() { }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Gulberg",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+export class AreaComponent implements OnInit  {
+    private Regions : any;
+    private Areas : any;
+    private newarea : Area;
+
+    constructor(private InventoryService : InventorysystemService) {
+
+    }
+
+    async ngOnInit() {
+        this.Regions = await this.InventoryService.GetRegions();
+        this.Areas = await this.InventoryService.GetAreas();
+    }
+
+    mergeArea(value) {
+        this.newarea = Object.assign(value.oldData, value.newData);
+        console.log(this.newarea);
+    }
+
+    async AddArea(value) {
+        await this.InventoryService.AddArea(value.data);
+        this.Areas = await this.InventoryService.GetAreas();
+    }
+
+    async UpdateArea() {
+        await this.InventoryService.UpdateArea(this.newarea);
+    }
+
+    async DeleteArea(value) {
+        console.log(value);
+        await this.InventoryService.DeleteArea(value.data.areaId);
     }
 
 }

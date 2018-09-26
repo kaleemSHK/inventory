@@ -7,29 +7,39 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-setup.component.scss']
 })
 export class CustomerSetupComponent implements OnInit {
-    public banks: any;
+    private Customers : any;
+    private CustomerTypes : any;
+    private SalesPeople : any;
+    private ModeOfPayments : any;
+    private UpdatedModel : any;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) { }
 
-    constructor() { }
+    async ngOnInit() {
+       this.Customers = await this.InventoryService.GetCustomers();
+       this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+       this.SalesPeople = await this.InventoryService.GetSalesPeople();
+       this.ModeOfPayments = await this.InventoryService.GetModeOfPayments();
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Pakistani",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async AddCustomer(value) {
+        //console.log(value.data);
+        await this.InventoryService.AddCustomer(value.data);
+        this.Customers = await this.InventoryService.GetCustomers();
+        //console.log(this.Customers);
+    }
+
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+        //console.log(this.UpdatedModel);
+    }
+
+    async UpdateCustomer() {
+        return await this.InventoryService.UpdateCustomer(this.UpdatedModel);
+    }
+
+    async DeleteCustomer(value) {
+        return await this.InventoryService.DeleteCustomer(value.key);
     }
 
 }

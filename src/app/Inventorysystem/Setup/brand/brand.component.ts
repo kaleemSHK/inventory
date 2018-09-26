@@ -1,36 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { InventorysystemModule } from '../../Inventorysystem.module';
+import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { Brand } from '../../models/Setup/Brand';
 
 @Component({
     selector: 'app-brand',
     templateUrl: './brand.component.html',
     styleUrls: ['./brand.component.scss']
 })
+
 export class BrandComponent implements OnInit {
-    public banks: any;
+    private Brands : any;
+    private newbrand : Brand;
+    
+    constructor(private InventoryService : InventorysystemService) {
+    }
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    async ngOnInit() {
+        this.Brands = await this.InventoryService.GetBrands();
+        //console.log(this.Brands);
+    }
 
-    constructor() { }
+    mergeBrand(value) {
+        this.newbrand = Object.assign(value.oldData, value.newData);
+        //console.log(this.newbrand);
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Eva Cooking",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async AddBrand(value) {
+        //console.log(value);
+        await this.InventoryService.AddBrand(value.data);
+        this.Brands = await this.InventoryService.GetBrands();
+    }
+
+    async UpdateBrand() {
+        return await this.InventoryService.UpdateBrand(this.newbrand);
+    }
+
+    async DeleteBrand(value) {
+        //console.log(value);
+        return await this.InventoryService.DeleteBrand(value.key);
     }
 
 }

@@ -11,24 +11,10 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
 })
 export class SupplierComponent implements OnInit {
     public Supplier: any;
+    public UpdatedModel : any;
 
     constructor(private InventoryService: InventorysystemService) {
-        // this.SupplierForm = this.formBuilder.group({
-        //     'Code': ['', Validators.required],
-        //     'Status': ['', Validators.required],
-        //     'Name': ['', Validators.required],
-        //     'Address': ['', Validators.required],
-        //     'City': ['', Validators.required],
-        //     'Country': ['', Validators.required],
-        //     'LandlineNumber': ['', Validators.required],
-        //     'MobilerNumber': ['', Validators.required],
-        //     'FaxNumber': ['', Validators.required],
-        //     'Email': ['', Validators.required],
-        //     'Nature': ['', Validators.required],
-        //     'ContactName': ['', Validators.required],
-        //     'ContactNumber': ['', Validators.required],
-        //     'GlAccount': ['', Validators.required],
-        // });
+       
     }
 
     async  ngOnInit() {
@@ -36,15 +22,20 @@ export class SupplierComponent implements OnInit {
     }
 
     async AddSupplier(value) {
-        return await this.InventoryService.AddSupplier(value);
+        await this.InventoryService.AddSupplier(value.data);
+        this.Supplier = await this.InventoryService.GetSuppliers();
     }
 
-    async UpdateSupplier(value) {
-        return await this.InventoryService.UpdateSupplier(value.Key);
+    UpdateModel(value) {
+        this.UpdatedModel = {...value.oldData, ...value.newData};
+    }
+
+    async UpdateSupplier() {
+        return await this.InventoryService.UpdateSupplier(this.UpdatedModel);
     }
 
     async DeleteSupplier(value) {
-        return await this.InventoryService.DeleteSupplier(value.Key.SupplierId);
+        return await this.InventoryService.DeleteSupplier(value.key);
     }
 
 

@@ -1,5 +1,5 @@
 export interface Area {
-    AreaId: number,
-    Name: string,
-    RegionId: number
+    areaId: number,
+    name: string,
+    regionId: number
 }

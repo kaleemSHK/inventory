@@ -1,5 +1,5 @@
 export interface Unit {
-    UnitId: number,
-    Description: string,
-    Name: string
+    unitId: number,
+    description: string,
+    name: string
 }

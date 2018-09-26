@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventorysystemService } from '../../service/Inventorysystem.service';
+import { CustomerType } from '../../models/Setup/CustomerType';
 
 @Component({
     selector: 'app-customer-type',
@@ -7,29 +8,36 @@ import { InventorysystemService } from '../../service/Inventorysystem.service';
     styleUrls: ['./customer-type.component.scss']
 })
 export class CustomerTypeComponent implements OnInit {
-    public banks: any;
+    private CustomerTypes : any;
+    private newCusTyp : CustomerType;
 
-    public banksAdvicetemplate: any;
-    public Country: any;
-    public City: any;
+    constructor(private InventoryService : InventorysystemService) {
 
-    constructor() { }
+    }
 
-    ngOnInit() {
-        this.banks = [
-            {
-                id: "115",
-                Name: "Imtiaz Store",
-                value: "2500",
-                bankAdviceTemplate: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                Country: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-                City: [{ display: "xyz", value: "xyz" }, { display: "xyz", value: "xyz" }],
-            }
-        ]
-        this.banksAdvicetemplate = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "UBL", display: "UBL" }];
-        this.Country = [{ value: "USA", display: "USA" }, { value: "Dubai", display: "Dubai" }, { value: "Pakistan", display: "Paskistan" }];
-        this.Country = [{ value: "General", display: "General" }, { value: "General-With-NIC", display: "General With NIC" }, { value: "karachi", display: "karachi" }];
-        console.log(this.banks);
+    async ngOnInit() {
+        this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+        console.log(this.CustomerTypes);
+    }
+
+    OldValue(value) {
+        this.newCusTyp = { ...value.oldData, ...value.newData };
+        console.log(this.newCusTyp);
+    }
+
+    async AddCustomerType(value) {
+        console.log(value);
+        await this.InventoryService.AddCustomerType(value.data);
+        this.CustomerTypes = await this.InventoryService.GetCustomerTypes();
+    }
+
+    async UpdateCustomerType() {
+        return this.InventoryService.UpdateCustomerType(this.newCusTyp);
+    }
+
+    async DeleteCustomerType(value) {
+        console.log(value);
+        return await this.InventoryService.DeleteCustomerType(value.key);
     }
 
 }
