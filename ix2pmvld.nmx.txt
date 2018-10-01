@@ -1,0 +1,18 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   src/app/Inventorysystem/Purchase/purchase-order/purchase-order.component.html
+#	modified:   src/app/Inventorysystem/Sales/delivery-note/delivery-note.component.ts
+#	modified:   src/app/Inventorysystem/Sales/sales-order-item/sales-order-item.component.html
+#	modified:   src/app/Inventorysystem/Sales/sales-order/sales-order.component.html
+#	modified:   src/app/Inventorysystem/Sales/sales-order/sales-order.component.scss
+#	modified:   src/app/Inventorysystem/Sales/sales-order/sales-order.component.ts
+#	modified:   src/app/Inventorysystem/models/Sales/SalesIndent.ts
+#	modified:   src/app/Inventorysystem/models/Sales/SalesOrder.ts
+#	modified:   src/app/Inventorysystem/models/Setup/Distributor.ts
+#
+
